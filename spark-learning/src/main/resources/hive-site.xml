@@ -15,4 +15,8 @@
         <name>javax.jdo.option.ConnectionPassword</name>
         <value>123456</value>
     </property>
+    <property>
+        <name>hive.metastore.warehouse.dir</name>
+        <value>/usr/hive/warehouse</value>
+    </property>
 </configuration>
