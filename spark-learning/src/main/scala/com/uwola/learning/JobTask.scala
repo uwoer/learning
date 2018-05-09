@@ -18,12 +18,20 @@ import org.apache.spark.{SparkConf, SparkContext}
         4. 每个用户总商品数量以及去重后的商品数量
         5. 每个用户购买的平均每个订单的商品数量（hive已做过）
   */
+
+/**
+  * spark: SparkSession
+  * 隐式导入的说明
+  * import spark.sql                         使用sparksql时导入
+  * import spark.implicits._                 使用$ 语法糖时导入
+  * import org.apache.spark.sql.functions._  使用sparksql内置函数时需要导入
+  */
 object test{
   def main(args: Array[String]): Unit = {
     val sparkConf = new SparkConf().setMaster("local").setAppName("test")
     val sc = new SparkContext(sparkConf)
-    val sparkSession = SparkSession.builder.master("local").appName("spark session example").enableHiveSupport().getOrCreate()
-    sparkSession.sql("show databases").show()
+    val spark = SparkSession.builder.master("local").appName("spark session example").enableHiveSupport().getOrCreate()
+    spark.sql("show databases").show()
 
   }
 
@@ -56,15 +64,32 @@ object test{
     //清除缓存
     cache.unpersist()
 
-//    priors.selectExpr("product_id","cast(reordered as int)").filter(col("reordered")===1).groupBy("product_id").count().show(5)
-//    priors.selectExpr("product_id","cast(reordered as int)").groupBy("product_id").sum("reordered")
+    priors.selectExpr("product_id","cast(reordered as int)").filter("reordered = 1" ).groupBy("product_id").count().show(5)
+
+    import spark.implicits._
+    //filter($"reordered"===1 ) 需要导入  import spark.implicits._
+    priors.selectExpr("product_id","cast(reordered as int)").filter($"reordered"===1).groupBy("product_id").count().show(5)
+
+    import org.apache.spark.sql.functions._
+    //    col("reordered") 需要导入  import org.apache.spark.sql.functions._ 内置函数
+    priors.selectExpr("product_id","cast(reordered as int)").filter(col("reordered")===1).groupBy("product_id").count().show(5)
+    priors.selectExpr("product_id","cast(reordered as int)").filter(col("reordered")===1).groupBy("product_id").count().show(5)
+
+//    col("reordered") 不需要导入  import org.apache.spark.sql.functions._ 内置函数
+//    priors.selectExpr("product_id","cast(reordered as int)").filter(priors.col("reordered")===1).groupBy("product_id").count().show(5)
+
+    //    priors.selectExpr("product_id","cast(reordered as int)").groupBy("product_id").sum("reordered")
 //    2.统计product 被reordered的数量（再次购买）（这商品是不是消耗品） product_id做group by(聚合)，统计一下sum（reorder）的值
 //    agg一般是搭配groupby这种聚合函数使用  和单独使用sum的差别，是在一次聚合中可以统计出来多个值
 //    val productSumReorder = priors.groupBy("product_id").agg(sum("reordered"),avg("reordered")).show(5)
-//    列重命名
-//    val productSumReorder = priors.groupBy("product_id").agg(sum("reordered"),avg("reordered")).withColumnRenamed("sum(reordered)","sum_re").withColumnRenamed("avg(reordered)","avg_re").show(5)
 
-//    val jproduct = productCnt.join(productSumRecorder,"product_id")
+    import org.apache.spark.sql.functions._
+    //    列重命名  需要导入  import org.apache.spark.sql.functions._ 内置函数
+    val productSumReorder = priors.groupBy("product_id").agg(sum("reordered"),avg("reordered")).withColumnRenamed("sum(reordered)","sum_re").withColumnRenamed("avg(reordered)","avg_re")
+
+    //    列重命名  不需要导入  import org.apache.spark.sql.functions._ 内置函数
+    //    val productSumReorder = priors.groupBy("product_id").agg("reordered" -> "sum","reordered" -> "avg").withColumnRenamed("sum(reordered)","sum_re").withColumnRenamed("avg(reordered)","avg_re").show(5)
+    val jproduct = productCnt.join(productSumReorder,"product_id")
     //    udf：
     import org.apache.spark.sql.functions._
     val avg_udf = udf((sm:Long,cnt:Long)=>sm.toDouble/cnt.toDouble)
