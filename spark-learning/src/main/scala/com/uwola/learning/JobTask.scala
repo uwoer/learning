@@ -73,7 +73,6 @@ object test{
 //    jproduct.selectExpr("*","sum_re/count as mean_re")
 
 
-
 //    1.每个用户平均购买订单的间隔周期
 
 //    1)、用户的第一个订单没有间隔天数的，需要赋值为0
