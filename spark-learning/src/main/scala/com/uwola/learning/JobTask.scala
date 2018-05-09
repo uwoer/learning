@@ -113,7 +113,6 @@ object test{
       .selectExpr("user_id","tuple._1 as prod_dist_cnt","tuple._2 as prod_records")
 
 
-
 //    5.每个用户购买的平均每个订单的商品数量
 
 //    1）先求每个订单的商品数量【对订单做聚合count（）】
