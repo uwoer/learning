@@ -3,54 +3,27 @@ package com.uwola.learning
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkConf, SparkContext}
 
-class JobTask {
-  /**
-    * wordcount ，然后打印出前20个词频最大的
-    * @param sc
-    */
-  def wordCount(sc:SparkContext): Unit = {
-    val textRdd = sc.textFile("C:\\Users\\MACHENIKE\\Desktop\\hadoop2.0\\mapreduce_wordcount_python\\The_Man_of_Property.txt")
-    textRdd.flatMap(line => line.split(" ")).map(line => (line, 1)).reduceByKey(_ + _).sortBy(_._2, ascending = false).take(20).foreach(println)
-  }
-
-
-  /**
-    * product 统计/特征（3个特征）
-    * 1. 统计product被购买的数据量
+/**
+  * product 统计/特征（3个特征）
+  * 1. 统计product被购买的数据量
       2. 统计product 被reordered的数量（再次购买）
       3. 结合上面数量统计product购买的reordered 的比率
-    */
-  def getProductFeature(sparkSession:SparkSession):Unit= {
-    val sql = "select product_id,count(*) as product_count,sum(reordered) as reordered_count,(sum(reordered)/count(*)) as ratio from trains group by product_id limit 10"
-    val df = sparkSession.sql(sql)
-    df.show()
-  }
-    /**
-      * user 统计/特征 （）
+  */
+
+/**
+  * user 统计/特征 （）
         1. 每个用户平均购买订单的间隔周期
         2. 每个用户的总订单数量
         3. 每个用户购买的product商品去重后的集合数据
         4. 每个用户总商品数量以及去重后的商品数量
         5. 每个用户购买的平均每个订单的商品数量（hive已做过）
-       */
-    def getUserFeature(sparkSession: SparkSession):Unit={
-      val sql ="select * from\n(\nselect ord.user_id,(sum(days_since_prior_order)+sum(cast(order_hour_of_day as double))/24)/count(1) ,\nsum(ord.order_number),collect_list(distinct pri.product_id),\nsize(collect_list(pri.product_id)),size(collect_list(distinct pri.product_id))\nfrom orders ord  \njoin (select * from priors  limit 100)pri \nwhere   ord.order_id = pri.order_id\ngroup by user_id \n) a\njoin \n(\nselect ord.user_id,avg(pri.products_cnt) as avg_prod\nfrom \n(select order_id,user_id from orders)ord \njoin \n(select order_id,count(1) as products_cnt from priors  group by order_id )pri \non ord.order_id=pri.order_id\ngroup by ord.user_id\n) b\non a.user_id = b.user_id\nlimit 10"
-      val df = sparkSession.sql(sql)
-      df.show()
-    }
-}
-
+  */
 object test{
   def main(args: Array[String]): Unit = {
     val sparkConf = new SparkConf().setMaster("local").setAppName("test")
     val sc = new SparkContext(sparkConf)
     val sparkSession = SparkSession.builder.master("local").appName("spark session example").enableHiveSupport().getOrCreate()
-
     sparkSession.sql("show databases").show()
-//    val job = new JobTask()
-//    job.wordCount(sc) //第一题
-//    job.getProductFeature(sparkSession) //第二题
-//    job.getUserFeature(sparkSession) //第三题
 
   }
 
@@ -152,9 +125,6 @@ object test{
 
 //    2）求每个用户订单中商品个数的平均值【对user做聚合，avg（商品个数）】
     orders.join(ordProCnt,"order_id").groupBy("user_id").avg("count")
-
-
-
 
 
   }
