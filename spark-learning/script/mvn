@@ -1,2 +1,2 @@
 #集群环境打包
-mvn clean  package -P prod
+mvn clean package -P prod
