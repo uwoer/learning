@@ -46,7 +46,7 @@ object test{
 
   def zuoye2(spark: SparkSession):Unit={
     import spark.sql
-    val orders = sql("select * from uwola.products")
+    val orders = sql("select * from uwola.orders")
     orders.show(5)
 //    scala 命令行中可以执行
 //    orders.filter(col("eval_set") === "test").show(5)
@@ -146,6 +146,20 @@ object test{
 //    2）求每个用户订单中商品个数的平均值【对user做聚合，avg（商品个数）】
     orders.join(ordProCnt,"order_id").groupBy("user_id").avg("count")
 
+    orders.selectExpr("user_id","order_number").distinct().groupBy("user_id").count().show(5)
+    orders.selectExpr("user_id","order_number").where("user_id < 11458")
+
+//    orders.selectExpr("user_id","order_number").where("user_id < 11458").groupBy("user_id").agg(max("order_number"),min("order_number")).foreach(row => println(row))
+    orders.selectExpr("user_id","order_number").where("user_id < 11458").groupBy("user_id").agg(max("order_number"),min("order_number")).withColumnRenamed("max(order_number)","maxET").withColumnRenamed("min(order_number)","minET").show(5)
+
+    orders.selectExpr("user_id","order_number").where("user_id < 11458").groupBy("user_id")
+      .agg(max("order_number"),min("order_number")).withColumnRenamed("max(order_number)","maxET").withColumnRenamed("min(order_number)","minET").
+      selectExpr("user_id","(maxET - minET) as et").selectExpr("avg(et)").show()
+
+    //分组
+    orders.selectExpr("user_id","order_number").where("user_id < 11458").groupBy("user_id")
+      .agg(max("order_number"),min("order_number")).withColumnRenamed("max(order_number)","maxET").withColumnRenamed("min(order_number)","minET")
+      .selectExpr("avg(maxET - minET) as avgVisitTime").show()
 
   }
 

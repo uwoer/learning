@@ -17,6 +17,6 @@
     </property>
     <property>
         <name>hive.metastore.warehouse.dir</name>
-        <value>/usr/hive/warehouse</value>
+        <value>/user/hive/warehouse</value>
     </property>
 </configuration>
