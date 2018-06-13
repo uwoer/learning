@@ -82,6 +82,24 @@
       <artifactId>jieba-analysis</artifactId>
       <version>1.0.2</version>
     </dependency>
+    <!--spark-streaming-->
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-streaming_${scala.version}</artifactId>
+      <version>${spark.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-streaming-kafka-0-8_${scala.version}</artifactId>
+      <version>${spark.version}</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.47</version>
+    </dependency>
+
 
   </dependencies>
 
