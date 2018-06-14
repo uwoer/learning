@@ -118,12 +118,14 @@ object test{
 
 //    DataFrame转RDD处理：
     val rddRecords = op.rdd.map(x=>(x(0).toString,x(1).toString)).groupByKey().mapValues(_.toSet.mkString(","))
-
 //    RDD转DataFrame：
 //    需要隐式转换：
     import spark.implicits._
     rddRecords.toDF("user_id","product_records")
-
+    //使用row的getAs()获取指定列名的列
+    rddRecords.toDF("user_id","product_records").foreach(row => (row.getAs[Int]("user_id"),row.getAs[List[Int]]("product_records")))
+    //使用row的getValuesMap()获取几列的值返回的是个map
+    rddRecords.toDF("user_id","product_records").foreach( row => row.getValuesMap[Any](Array("user_id","product_records")) )
 //    4.每个用户总商品数量以及去重后的商品数量
 //    总商品数量:
       orders.join(priors,"order_id").groupBy("user_id").count().show(5)
@@ -160,6 +162,8 @@ object test{
     orders.selectExpr("user_id","order_number").where("user_id < 11458").groupBy("user_id")
       .agg(max("order_number"),min("order_number")).withColumnRenamed("max(order_number)","maxET").withColumnRenamed("min(order_number)","minET")
       .selectExpr("avg(maxET - minET) as avgVisitTime").show()
+
+//    spark.sqlContext.createDataFrame()
 
   }
 
