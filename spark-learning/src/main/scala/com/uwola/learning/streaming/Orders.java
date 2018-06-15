@@ -43,20 +43,20 @@ public class Orders implements Serializable {
         this.order_dow = order_dow;
     }
 
-    public String getHour() {
-        return hour;
+    public String getOrder_hour_of_day() {
+        return order_hour_of_day;
     }
 
-    public void setHour(String hour) {
-        this.hour = hour;
+    public void setOrder_hour_of_day(String order_hour_of_day) {
+        this.order_hour_of_day = order_hour_of_day;
     }
 
-    public String getDay() {
-        return day;
+    public String getDays_since_prior_order() {
+        return days_since_prior_order;
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    public void setDays_since_prior_order(String days_since_prior_order) {
+        this.days_since_prior_order = days_since_prior_order;
     }
 
     public String order_id;
@@ -64,6 +64,6 @@ public class Orders implements Serializable {
     public String eval_set;
     public String order_number;
     public String order_dow;
-    public String hour;
-    public String day;
+    public String order_hour_of_day;
+    public String days_since_prior_order;
 }
