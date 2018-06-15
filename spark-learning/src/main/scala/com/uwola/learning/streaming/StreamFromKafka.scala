@@ -33,7 +33,7 @@ object StreamFromKafka {
         System.exit(1)
       }
 
-//      val Array(group_id, topic, exectime, dt,path) = args
+//    val Array(group_id, topic, exectime, dt,path) = args
       val Array(group_id, topic, exectime,dt) = args
 
 //      val dt = getNowDate();
@@ -128,6 +128,9 @@ object StreamFromKafka {
       ssc.awaitTermination()
     }
 
+  /**
+    *以表的形式保存
+    */
   def rddSave(rdd:RDD[Row],schema:StructType,tableName:String){
     val records = rdd.coalesce(1)
     val spark = SparkSession
@@ -139,6 +142,9 @@ object StreamFromKafka {
     df.write.mode(SaveMode.Append).saveAsTable(tableName)
   }
 
+  /**
+    * 插入表
+    */
   def rddSaveTable(rdd:RDD[Row],schema:StructType,tableName:String){
     val records = rdd.coalesce(1)
     // 打开hive动态分区和非严格模式
@@ -154,6 +160,9 @@ object StreamFromKafka {
     df.write.mode(SaveMode.Append).insertInto(tableName)
   }
 
+  /**
+    * uv 统计
+    */
   def uv(dStream: DStream[String]): Unit ={
     //uv 30s内的统计
     val log = dStream.map(x => JSON.parseObject(x, classOf[Orders]).user_id)
@@ -166,7 +175,9 @@ object StreamFromKafka {
 //    log.saveAsTextFiles(path)
   }
 
-
+  /**
+    * 获取当前时间
+    */
   def getNowDate()={
     val now:Date = new Date()
     val dateFormat:SimpleDateFormat = new SimpleDateFormat("yyyyMMdd")
