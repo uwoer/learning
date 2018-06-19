@@ -13,6 +13,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * File modified by Hortonworks, Inc. Modifications are also licensed under
+ * the Apache Software License, Version 2.0.
  */
 
 package org.apache.spark.sql.execution.datasources.hbase
@@ -31,7 +34,6 @@ import org.apache.spark.sql.execution.datasources.hbase
 import org.apache.spark.sql.execution.datasources.hbase.HBaseResources._
 import org.apache.spark.sql.sources.Filter
 import org.apache.spark.sql.types.StructType
-import org.apache.spark.sql.types.BinaryType
 import org.apache.spark.util.ShutdownHookManager
 import org.apache.spark.sql.execution.datasources.hbase.types.SHCDataTypeFactory
 
@@ -54,6 +56,7 @@ private[hbase] class HBaseTableScanRDD(
   val outputs = StructType(requiredColumns.map(relation.schema(_))).toAttributes
   val columnFields = relation.splitRowKeyColumns(requiredColumns)._2
   private def sparkConf = SparkEnv.get.conf
+  val serializedToken = relation.serializedToken
 
   override def getPartitions: Array[Partition] = {
     val hbaseFilter = HBaseFilter.buildFilters(filters, relation)
@@ -111,6 +114,42 @@ private[hbase] class HBaseTableScanRDD(
     val unioned = keySeq ++ valueSeq
     // Return the row ordered by the requested order
     Row.fromSeq(fields.map(unioned.get(_).getOrElse(null)))
+  }
+
+  // TODO: It is a big performance overhead, as for each row, there is a hashmap lookup.
+  def buildRows(fields: Seq[Field], result: Result): Set[Row] = {
+    val r = result.getRow
+    val keySeq: Map[Field, Any] = {
+      if (relation.isComposite()) {
+        relation.catalog.shcTableCoder
+          .decodeCompositeRowKey(r, relation.catalog.getRowKey)
+      } else {
+        val f = relation.catalog.getRowKey.head
+        Seq((f, SHCDataTypeFactory.create(f).fromBytes(r))).toMap
+      }
+    }
+
+    val valueSeq: Seq[Map[Long, (Field, Any)]] = fields.filter(!_.isRowKey).map { x =>
+      import scala.collection.JavaConverters.asScalaBufferConverter
+      val dataType = SHCDataTypeFactory.create(x)
+      val kvs = result.getColumnCells(
+        relation.catalog.shcTableCoder.toBytes(x.cf),
+        relation.catalog.shcTableCoder.toBytes(x.col)).asScala
+
+      kvs.map(kv => {
+        val v = CellUtil.cloneValue(kv)
+        (kv.getTimestamp, x -> dataType.fromBytes(v))
+      }).toMap.withDefaultValue(x -> null)
+    }
+
+    val ts = valueSeq.foldLeft(Set.empty[Long])((acc, map) => acc ++ map.keySet)
+    //we are loosing duplicate here, because we didn't support passing version (timestamp) to the row
+    ts.map(version => {
+      keySeq ++ valueSeq.map(_.apply(version)).toMap
+    }).map { unioned =>
+      // Return the row ordered by the requested order
+      Row.fromSeq(fields.map(unioned.get(_).getOrElse(null)))
+    }
   }
 
   private def toResultIterator(result: GetResource): Iterator[Result] = {
@@ -192,6 +231,57 @@ private[hbase] class HBaseTableScanRDD(
     iterator
   }
 
+  /**
+    * Convert result in to list of rows aggregated by timestamp and flat this list into one iterator of rows
+    * This solution stand for fetching more than one version
+    */
+  private def toFlattenRowIterator(
+      it: Iterator[Result]): Iterator[Row] = {
+
+    val iterator = new Iterator[Row] {
+      val start = System.currentTimeMillis()
+      var rowCount: Int = 0
+      var rows: Set[Row] = Set.empty[Row]
+      val indexedFields = relation.getIndexedProjections(requiredColumns).map(_._1)
+
+      override def hasNext: Boolean = {
+        if(!rows.isEmpty || it.hasNext) {
+          true
+        }
+        else {
+          val end = System.currentTimeMillis()
+          logInfo(s"returned ${rowCount} rows from hbase in ${end - start} ms")
+          false
+        }
+      }
+
+      private def nextRow(): Row = {
+        val row = rows.head
+        rows = rows.tail
+        row
+      }
+
+      override def next(): Row = {
+        rowCount += 1
+        if(rows.isEmpty) {
+          val r = it.next()
+          rows = buildRows(indexedFields, r)
+          if(rows.isEmpty) {
+            // If 'requiredColumns' is empty, 'indexedFields' will be empty, which leads to empty 'rows'.
+            // This happens when users' query doesn't require Spark/SHC to return any real data from HBase tables,
+            // e.g. dataframe.count()
+            Row.fromSeq(Seq.empty)
+          } else {
+            nextRow()
+          }
+        } else {
+          nextRow()
+        }
+      }
+    }
+    iterator
+  }
+
   override def getPreferredLocations(split: Partition): Seq[String] = {
     split.asInstanceOf[HBaseScanPartition].regions.server.map {
       identity
@@ -256,6 +346,7 @@ private[hbase] class HBaseTableScanRDD(
   }
 
   override def compute(split: Partition, context: TaskContext): Iterator[Row] = {
+    SHCCredentialsManager.processShcToken(serializedToken)
     val ord = hbase.ord//implicitly[Ordering[HBaseType]]
     val partition = split.asInstanceOf[HBaseScanPartition]
     // remove the inclusive upperbound
@@ -289,7 +380,11 @@ private[hbase] class HBaseTableScanRDD(
     } ++ gIt
 
     ShutdownHookManager.addShutdownHook { () => HBaseConnectionCache.close() }
-    toRowIterator(rIt)
+    if(relation.mergeToLatest) {
+      toRowIterator(rIt)
+    } else {
+      toFlattenRowIterator(rIt)
+    }
   }
 
   private def handleTimeSemantics(query: Query): Unit = {

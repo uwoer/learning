@@ -13,6 +13,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * File modified by Hortonworks, Inc. Modifications are also licensed under
+ * the Apache Software License, Version 2.0.
  */
 
 package org.apache.spark.sql.execution.datasources.hbase
@@ -23,6 +26,13 @@ import org.apache.spark.sql.execution.datasources.hbase.types._
 
 object SparkHBaseConf {
   val testConf = "spark.hbase.connector.test"
+  val credentialsManagerEnabled = "spark.hbase.connector.security.credentials.enabled"
+  val expireTimeFraction = "spark.hbase.connector.security.credentials.expireTimeFraction"
+  val refreshTimeFraction = "spark.hbase.connector.security.credentials.refreshTimeFraction"
+  val refreshDurationMins = "spark.hbase.connector.security.credentials.refreshDurationMins"
+  val principal = "spark.hbase.connector.security.credentials"
+  val keytab = "spark.hbase.connector.security.keytab"
+
   var conf: Configuration = _
   var BulkGetSize = "spark.hbase.connector.bulkGetSize"
   var defaultBulkGetSize = 100

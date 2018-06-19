@@ -13,11 +13,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * File modified by Hortonworks, Inc. Modifications are also licensed under
+ * the Apache Software License, Version 2.0.
  */
 
 package org.apache.spark.sql.execution.datasources.hbase
 
-import java.io.{IOException, ObjectInputStream, ObjectOutputStream}
+import java.io._
 
 import scala.util.control.NonFatal
 import scala.xml.XML
@@ -37,6 +40,7 @@ import org.apache.spark.sql.sources._
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{DataFrame, Row, SQLContext, SaveMode}
 import org.apache.spark.sql.execution.datasources.hbase.types.SHCDataTypeFactory
+import org.apache.spark.util.Utils
 
 /**
  * val people = sqlContext.read.format("hbase").load("people")
@@ -57,11 +61,14 @@ private[sql] class DefaultSource extends RelationProvider with CreatableRelation
     parameters: Map[String, String],
     data: DataFrame): BaseRelation = {
     val relation = HBaseRelation(parameters, Some(data.schema))(sqlContext)
-    relation.createTable()
+    relation.createTableIfNotExist()
     relation.insert(data, false)
     relation
   }
 }
+
+case class InvalidRegionNumberException(message: String = "", cause: Throwable = null)
+              extends Exception(message, cause) 
 
 case class HBaseRelation(
     parameters: Map[String, String],
@@ -73,6 +80,7 @@ case class HBaseRelation(
   val minStamp = parameters.get(HBaseRelation.MIN_STAMP).map(_.toLong)
   val maxStamp = parameters.get(HBaseRelation.MAX_STAMP).map(_.toLong)
   val maxVersions = parameters.get(HBaseRelation.MAX_VERSIONS).map(_.toInt)
+  val mergeToLatest = parameters.get(HBaseRelation.MERGE_TO_LATEST).map(_.toBoolean).getOrElse(true)
 
   val catalog = HBaseTableCatalog(parameters)
 
@@ -112,53 +120,103 @@ case class HBaseRelation(
 
   def hbaseConf = wrappedConf.value
 
-  def createTable() {
-    if (catalog.numReg > 3) {
-      val cfs = catalog.getColumnFamilies
-      val connection = HBaseConnectionCache.getConnection(hbaseConf)
-      // Initialize hBase table if necessary
-      val admin = connection.getAdmin
+  val serializedToken = SHCCredentialsManager.manager.getTokenForCluster(hbaseConf)
 
-      val isNameSpaceExist = try {
-        admin.getNamespaceDescriptor(catalog.namespace)
-        true
-      } catch {
-        case e: NamespaceNotFoundException => false
-      }
-      if (!isNameSpaceExist) {
-        admin.createNamespace(NamespaceDescriptor.create(catalog.namespace).build)
-      }
-
-      val tName = TableName.valueOf(s"${catalog.namespace}:${catalog.name}")
-      // The names of tables which are created by the Examples has prefix "shcExample"
-      if (admin.isTableAvailable(tName)
-          && tName.toString.startsWith(s"${catalog.namespace}:shcExample")){
-        admin.disableTable(tName)
-        admin.deleteTable(tName)
-      }
-      if (!admin.isTableAvailable(tName)) {
-        val tableDesc = new HTableDescriptor(tName)
-        cfs.foreach { x =>
-         val cf = new HColumnDescriptor(x.getBytes())
-          logDebug(s"add family $x to ${catalog.name}")
-          tableDesc.addFamily(cf)
-        }
-
-        val startKey = catalog.shcTableCoder.toBytes("aaaaaaa")
-        val endKey = catalog.shcTableCoder.toBytes("zzzzzzz")
-        val splitKeys = Bytes.split(startKey, endKey, catalog.numReg - 3)
-        admin.createTable(tableDesc, splitKeys)
-        val r = connection.getRegionLocator(TableName.valueOf(catalog.name)).getAllRegionLocations
-        while(r == null || r.size() == 0) {
-          logDebug(s"region not allocated")
-          Thread.sleep(1000)
-        }
-        logDebug(s"region allocated $r")
-
-      }
-      admin.close()
-      connection.close()
+  def createTableIfNotExist() {
+    val cfs = catalog.getColumnFamilies
+    val connection = HBaseConnectionCache.getConnection(hbaseConf)
+    // Initialize hBase table if necessary
+    val admin = connection.getAdmin
+    val isNameSpaceExist = try {
+      admin.getNamespaceDescriptor(catalog.namespace)
+      true
+    } catch {
+      case e: NamespaceNotFoundException => false
+      case NonFatal(e) =>
+        logError("Unexpected error", e)
+        false
     }
+    if (!isNameSpaceExist) {
+      admin.createNamespace(NamespaceDescriptor.create(catalog.namespace).build)
+    }
+    val tName = TableName.valueOf(s"${catalog.namespace}:${catalog.name}")
+    // The names of tables which are created by the Examples has prefix "shcExample"
+    if (admin.isTableAvailable(tName)
+      && tName.toString.startsWith(s"${catalog.namespace}:shcExample")){
+      admin.disableTable(tName)
+      admin.deleteTable(tName)
+    }
+
+    if (!admin.isTableAvailable(tName)) {
+      if (catalog.numReg <= 3) {
+        throw new InvalidRegionNumberException("Creating a new table should " +
+          "specify the number of regions which must be greater than 3.")
+      }
+      val tableDesc = new HTableDescriptor(tName)
+      cfs.foreach { x =>
+        val cf = new HColumnDescriptor(x.getBytes())
+        logDebug(s"add family $x to ${catalog.name}")
+        maxVersions.foreach(v => cf.setMaxVersions(v))
+        tableDesc.addFamily(cf)
+      }
+      val startKey = catalog.shcTableCoder.toBytes("aaaaaaa")
+      val endKey = catalog.shcTableCoder.toBytes("zzzzzzz")
+      val splitKeys = Bytes.split(startKey, endKey, catalog.numReg - 3)
+      admin.createTable(tableDesc, splitKeys)
+      val r = connection.getRegionLocator(tName).getAllRegionLocations
+      while(r == null || r.size() == 0) {
+        logDebug(s"region not allocated")
+        Thread.sleep(1000)
+      }
+      logDebug(s"region allocated $r")
+    }
+
+    admin.close()
+    connection.close()
+  }
+
+  private def convertToPut(rkFields: Seq[Field])(row: Row) = {
+    val rkIdxedFields: Seq[(Int, Field)] = rkFields.map{ case x =>
+      (schema.fieldIndex(x.colName), x)
+    }
+    val colsIdxedFields = schema
+      .fieldNames
+      .partition( x => rkFields.map(_.colName).contains(x))
+      ._2.map(x => (schema.fieldIndex(x), catalog.getField(x)))
+
+    val coder = catalog.shcTableCoder
+    // construct bytes for row key
+    val rBytes =
+      if (isComposite()) {
+        val rowBytes = coder.encodeCompositeRowKey(rkIdxedFields, row)
+
+        val rLen = rowBytes.foldLeft(0) { case (x, y) =>
+          x + y.length
+        }
+        val rBytes = new Array[Byte](rLen)
+        var offset = 0
+        rowBytes.foreach { x =>
+          System.arraycopy(x, 0, rBytes, offset, x.length)
+          offset += x.length
+        }
+        rBytes
+      } else {
+        val rBytes = rkIdxedFields.map { case (x, y) =>
+          SHCDataTypeFactory.create(y).toBytes(row(x))
+        }
+        rBytes(0)
+      }
+    val put = timestamp.fold(new Put(rBytes))(new Put(rBytes, _))
+    colsIdxedFields.foreach { case (x, y) =>
+      val value = row(x)
+      if(value != null) {
+        put.addColumn(
+          coder.toBytes(y.cf),
+          coder.toBytes(y.col),
+          SHCDataTypeFactory.create(y).toBytes(value))
+      }
+    }
+    (new ImmutableBytesWritable, put)
   }
 
   /**
@@ -167,55 +225,24 @@ case class HBaseRelation(
    * @param overwrite Overwrite existing values
    */
   override def insert(data: DataFrame, overwrite: Boolean): Unit = {
-    hbaseConf.set(TableOutputFormat.OUTPUT_TABLE, catalog.name)
+    hbaseConf.set(TableOutputFormat.OUTPUT_TABLE, s"${catalog.namespace}:${catalog.name}")
     val job = Job.getInstance(hbaseConf)
     job.setOutputFormatClass(classOf[TableOutputFormat[String]])
 
-    var count = 0
-    val rkFields = catalog.getRowKey
-    val rkIdxedFields = rkFields.map{ case x =>
-      (schema.fieldIndex(x.colName), x)
+    // This is a workaround for SPARK-21549. After it is fixed, the snippet can be removed.
+    val jobConfig = job.getConfiguration
+    val tempDir = Utils.createTempDir()
+    if (jobConfig.get("mapreduce.output.fileoutputformat.outputdir") == null) {
+      jobConfig.set("mapreduce.output.fileoutputformat.outputdir", tempDir.getPath + "/outputDataset")
     }
-    val colsIdxedFields = schema
-      .fieldNames
-      .partition( x => rkFields.map(_.colName).contains(x))
-      ._2.map(x => (schema.fieldIndex(x), catalog.getField(x)))
+
+    val rkFields = catalog.getRowKey
     val rdd = data.rdd //df.queryExecution.toRdd
 
-    def convertToPut(row: Row) = {
-      val coder = catalog.shcTableCoder
-      // construct bytes for row key
-      val rBytes =
-        if (isComposite()) {
-          val rowBytes = coder.encodeCompositeRowKey(rkIdxedFields, row)
-
-          val rLen = rowBytes.foldLeft(0) { case (x, y) =>
-            x + y.length
-          }
-          val rBytes = new Array[Byte](rLen)
-          var offset = 0
-          rowBytes.foreach { x =>
-            System.arraycopy(x, 0, rBytes, offset, x.length)
-            offset += x.length
-          }
-          rBytes
-        } else {
-          val rBytes = rkIdxedFields.map { case (x, y) =>
-            SHCDataTypeFactory.create(y).toBytes(row(x))
-          }
-          rBytes(0)
-        }
-      val put = timestamp.fold(new Put(rBytes))(new Put(rBytes, _))
-      colsIdxedFields.foreach { case (x, y) =>
-        put.addColumn(
-          coder.toBytes(y.cf),
-          coder.toBytes(y.col),
-          SHCDataTypeFactory.create(y).toBytes(row(x)))
-      }
-      count += 1
-      (new ImmutableBytesWritable, put)
-    }
-    rdd.map(convertToPut).saveAsNewAPIHadoopDataset(job.getConfiguration)
+    rdd.mapPartitions(iter => {
+      SHCCredentialsManager.processShcToken(serializedToken)
+      iter.map(convertToPut(rkFields))
+    }).saveAsNewAPIHadoopDataset(jobConfig)
   }
 
   def rows = catalog.row
@@ -296,10 +323,10 @@ class SerializableConfiguration(@transient var value: Configuration) extends Ser
 }
 
 object HBaseRelation {
-
   val TIMESTAMP = "timestamp"
   val MIN_STAMP = "minStamp"
   val MAX_STAMP = "maxStamp"
+  val MERGE_TO_LATEST = "mergeToLatest"
   val MAX_VERSIONS = "maxVersions"
   val HBASE_CONFIGURATION = "hbaseConfiguration"
   // HBase configuration file such as HBase-site.xml, core-site.xml

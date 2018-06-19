@@ -13,6 +13,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * File modified by Hortonworks, Inc. Modifications are also licensed under
+ * the Apache Software License, Version 2.0.
  */
 
 package org.apache.spark.sql.execution.datasources.hbase
@@ -91,7 +94,7 @@ case class RegionResource(relation: HBaseRelation) extends ReferencedResource {
 
   override def init(): Unit = {
     connection = HBaseConnectionCache.getConnection(relation.hbaseConf)
-    rl = connection.getRegionLocator(TableName.valueOf(relation.catalog.name))
+    rl = connection.getRegionLocator(TableName.valueOf(relation.catalog.namespace, relation.catalog.name))
   }
 
   override def destroy(): Unit = {
@@ -123,7 +126,7 @@ case class TableResource(relation: HBaseRelation) extends ReferencedResource {
 
   override def init(): Unit = {
     connection = HBaseConnectionCache.getConnection(relation.hbaseConf)
-    table = connection.getTable(TableName.valueOf(relation.catalog.name))
+    table = connection.getTable(TableName.valueOf(relation.catalog.namespace, relation.catalog.name))
   }
 
   override def destroy(): Unit = {
