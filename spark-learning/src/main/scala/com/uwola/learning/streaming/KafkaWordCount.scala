@@ -15,7 +15,9 @@ object KafkaWordCount {
       System.err.println("Usage: KafkaWordCount <zkQuorum> <group> <topics> <numThreads>")
       System.exit(1)
     }
-
+    // 举个列子在在非driect模式下消费kafka 如果有3台服务器  每台机子开启一个进程，每个进程开启多少个线程合适[负载均衡]
+    //每台机子应用有6个线程  其中有两台机子的线程会被打满 另一台机子有一个线程富余
+    //这里有一个原则就是在创建kafka topic时指定的partition数n尽量是一个有较多公约数的数字 比如12 它的公约数（2,3,4,6） 这样在指定线程是相对容易
     val Array(zkQuorum, group, topics, numThreads) = args
     val sparkConf = new SparkConf().setAppName("KafkaWordCount")
     sparkConf.setMaster("local[3]")
