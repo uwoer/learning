@@ -1,0 +1,12 @@
+
+spark-submit --deploy-mode cluster --executor-memory 2G --num-executors 3 --class com.meimeitech.groupengine.UserGroupJob group-engine-0.1.2.jar
+
+
+yarn application -list
+yarn application -kill application_1498051055300_0301
+yarn logs -applicationId  application_1498051055300_0301
+yarn logs -applicationId  application_1498051055300_0301 -> 301.txt
+
+
+crontab -e
+
