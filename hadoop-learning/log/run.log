@@ -1,0 +1,355 @@
+ INFO 04-11 18:04:31 [main] Configuration.java:1129>: session.id is deprecated. Instead, use dfs.metrics.session-id
+ INFO 04-11 18:04:31 [main] JvmMetrics.java:76>: Initializing JVM Metrics with processName=JobTracker, sessionId=
+ WARN 04-11 18:04:31 [main] JobResourceUploader.java:64>: Hadoop command-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.
+ WARN 04-11 18:04:31 [main] JobResourceUploader.java:171>: No job jar file set.  User classes may not be found. See Job or Job#setJar(String).
+ INFO 04-11 18:04:31 [main] FileInputFormat.java:281>: Total input paths to process : 1
+ INFO 04-11 18:04:31 [main] JobSubmitter.java:199>: number of splits:5
+ INFO 04-11 18:04:31 [main] JobSubmitter.java:288>: Submitting tokens for job: job_local1412473370_0001
+ INFO 04-11 18:04:32 [main] Job.java:1301>: The url to track the job: http://localhost:8080/
+ INFO 04-11 18:04:32 [main] Job.java:1346>: Running job: job_local1412473370_0001
+ INFO 04-11 18:04:32 [Thread-4] LocalJobRunner.java:471>: OutputCommitter set in config null
+ INFO 04-11 18:04:32 [Thread-4] LocalJobRunner.java:489>: OutputCommitter is org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter
+ INFO 04-11 18:04:32 [Thread-4] LocalJobRunner.java:448>: Waiting for map tasks
+ INFO 04-11 18:04:32 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:224>: Starting task: attempt_local1412473370_0001_m_000000_0
+ INFO 04-11 18:04:32 [LocalJobRunner Map Task Executor #0] ProcfsBasedProcessTree.java:181>: ProcfsBasedProcessTree currently is supported only on Linux.
+ INFO 04-11 18:04:32 [LocalJobRunner Map Task Executor #0] Task.java:587>:  Using ResourceCalculatorProcessTree : org.apache.hadoop.yarn.util.WindowsBasedProcessTree@508c825
+ INFO 04-11 18:04:32 [LocalJobRunner Map Task Executor #0] MapTask.java:753>: Processing split: hdfs://master:9000/wordcount/input2/order_products__prior.csv:0+134217728
+ INFO 04-11 18:04:32 [LocalJobRunner Map Task Executor #0] MapTask.java:1202>: (EQUATOR) 0 kvi 26214396(104857584)
+ INFO 04-11 18:04:32 [LocalJobRunner Map Task Executor #0] MapTask.java:995>: mapreduce.task.io.sort.mb: 100
+ INFO 04-11 18:04:32 [LocalJobRunner Map Task Executor #0] MapTask.java:996>: soft limit at 83886080
+ INFO 04-11 18:04:32 [LocalJobRunner Map Task Executor #0] MapTask.java:997>: bufstart = 0; bufvoid = 104857600
+ INFO 04-11 18:04:32 [LocalJobRunner Map Task Executor #0] MapTask.java:998>: kvstart = 26214396; length = 6553600
+ INFO 04-11 18:04:32 [LocalJobRunner Map Task Executor #0] MapTask.java:402>: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+ INFO 04-11 18:04:33 [main] Job.java:1367>: Job job_local1412473370_0001 running in uber mode : false
+ INFO 04-11 18:04:33 [main] Job.java:1374>:  map 0% reduce 0%
+ INFO 04-11 18:04:36 [LocalJobRunner Map Task Executor #0] MapTask.java:1564>: Spilling map output
+ INFO 04-11 18:04:36 [LocalJobRunner Map Task Executor #0] MapTask.java:1565>: bufstart = 0; bufend = 33552706; bufvoid = 104857600
+ INFO 04-11 18:04:36 [LocalJobRunner Map Task Executor #0] MapTask.java:1567>: kvstart = 26214396(104857584); kvend = 13631060(54524240); length = 12583337/6553600
+ INFO 04-11 18:04:36 [LocalJobRunner Map Task Executor #0] MapTask.java:1202>: (EQUATOR) 44038465 kvi 11009612(44038448)
+ INFO 04-11 18:04:38 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:04:39 [main] Job.java:1374>:  map 6% reduce 0%
+ INFO 04-11 18:04:41 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:04:44 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:04:47 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:04:49 [SpillThread] MapTask.java:1660>: Finished spill 0
+ INFO 04-11 18:04:49 [LocalJobRunner Map Task Executor #0] MapTask.java:1219>: (RESET) equator 44038465 kv 11009612(44038448) kvi 8388184(33552736)
+ INFO 04-11 18:04:50 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:04:51 [main] Job.java:1374>:  map 7% reduce 0%
+ INFO 04-11 18:04:53 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:04:53 [LocalJobRunner Map Task Executor #0] MapTask.java:1564>: Spilling map output
+ INFO 04-11 18:04:53 [LocalJobRunner Map Task Executor #0] MapTask.java:1565>: bufstart = 44038465; bufend = 78214277; bufvoid = 104857600
+ INFO 04-11 18:04:53 [LocalJobRunner Map Task Executor #0] MapTask.java:1567>: kvstart = 11009612(44038448); kvend = 24796448(99185792); length = 12427565/6553600
+ INFO 04-11 18:04:53 [LocalJobRunner Map Task Executor #0] MapTask.java:1202>: (EQUATOR) 88700026 kvi 22175000(88700000)
+ INFO 04-11 18:04:54 [main] Job.java:1374>:  map 10% reduce 0%
+ INFO 04-11 18:04:56 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:04:57 [main] Job.java:1374>:  map 12% reduce 0%
+ INFO 04-11 18:04:58 [SpillThread] MapTask.java:1660>: Finished spill 1
+ INFO 04-11 18:04:58 [LocalJobRunner Map Task Executor #0] MapTask.java:1219>: (RESET) equator 88700026 kv 22175000(88700000) kvi 19553576(78214304)
+ INFO 04-11 18:04:59 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:04:59 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:04:59 [LocalJobRunner Map Task Executor #0] MapTask.java:1457>: Starting flush of map output
+ INFO 04-11 18:04:59 [LocalJobRunner Map Task Executor #0] MapTask.java:1475>: Spilling map output
+ INFO 04-11 18:04:59 [LocalJobRunner Map Task Executor #0] MapTask.java:1476>: bufstart = 88700026; bufend = 1920567; bufvoid = 104857596
+ INFO 04-11 18:04:59 [LocalJobRunner Map Task Executor #0] MapTask.java:1478>: kvstart = 22175000(88700000); kvend = 15601136(62404544); length = 6573865/6553600
+ INFO 04-11 18:05:00 [main] Job.java:1374>:  map 13% reduce 0%
+ INFO 04-11 18:05:02 [communication thread] LocalJobRunner.java:591>: map > sort
+ INFO 04-11 18:05:02 [LocalJobRunner Map Task Executor #0] MapTask.java:1660>: Finished spill 2
+ INFO 04-11 18:05:02 [LocalJobRunner Map Task Executor #0] Merger.java:597>: Merging 3 sorted segments
+ INFO 04-11 18:05:02 [LocalJobRunner Map Task Executor #0] Merger.java:696>: Down to the last merge-pass, with 3 segments left of total size: 10073397 bytes
+ INFO 04-11 18:05:03 [LocalJobRunner Map Task Executor #0] Task.java:1001>: Task:attempt_local1412473370_0001_m_000000_0 is done. And is in the process of committing
+ INFO 04-11 18:05:03 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:591>: map > sort
+ INFO 04-11 18:05:03 [LocalJobRunner Map Task Executor #0] Task.java:1121>: Task 'attempt_local1412473370_0001_m_000000_0' done.
+ INFO 04-11 18:05:03 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:249>: Finishing task: attempt_local1412473370_0001_m_000000_0
+ INFO 04-11 18:05:03 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:224>: Starting task: attempt_local1412473370_0001_m_000001_0
+ INFO 04-11 18:05:03 [LocalJobRunner Map Task Executor #0] ProcfsBasedProcessTree.java:181>: ProcfsBasedProcessTree currently is supported only on Linux.
+ INFO 04-11 18:05:04 [main] Job.java:1374>:  map 100% reduce 0%
+ INFO 04-11 18:05:04 [LocalJobRunner Map Task Executor #0] Task.java:587>:  Using ResourceCalculatorProcessTree : org.apache.hadoop.yarn.util.WindowsBasedProcessTree@43d440b2
+ INFO 04-11 18:05:04 [LocalJobRunner Map Task Executor #0] MapTask.java:753>: Processing split: hdfs://master:9000/wordcount/input2/order_products__prior.csv:134217728+134217728
+ INFO 04-11 18:05:04 [LocalJobRunner Map Task Executor #0] MapTask.java:1202>: (EQUATOR) 0 kvi 26214396(104857584)
+ INFO 04-11 18:05:04 [LocalJobRunner Map Task Executor #0] MapTask.java:995>: mapreduce.task.io.sort.mb: 100
+ INFO 04-11 18:05:04 [LocalJobRunner Map Task Executor #0] MapTask.java:996>: soft limit at 83886080
+ INFO 04-11 18:05:04 [LocalJobRunner Map Task Executor #0] MapTask.java:997>: bufstart = 0; bufvoid = 104857600
+ INFO 04-11 18:05:04 [LocalJobRunner Map Task Executor #0] MapTask.java:998>: kvstart = 26214396; length = 6553600
+ INFO 04-11 18:05:04 [LocalJobRunner Map Task Executor #0] MapTask.java:402>: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+ INFO 04-11 18:05:09 [LocalJobRunner Map Task Executor #0] MapTask.java:1564>: Spilling map output
+ INFO 04-11 18:05:09 [LocalJobRunner Map Task Executor #0] MapTask.java:1565>: bufstart = 0; bufend = 35050040; bufvoid = 104857600
+ INFO 04-11 18:05:09 [LocalJobRunner Map Task Executor #0] MapTask.java:1567>: kvstart = 26214396(104857584); kvend = 14005388(56021552); length = 12209009/6553600
+ INFO 04-11 18:05:09 [LocalJobRunner Map Task Executor #0] MapTask.java:1202>: (EQUATOR) 45535788 kvi 11383940(45535760)
+ INFO 04-11 18:05:09 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:10 [main] Job.java:1374>:  map 26% reduce 0%
+ INFO 04-11 18:05:12 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:13 [main] Job.java:1374>:  map 27% reduce 0%
+ INFO 04-11 18:05:15 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:18 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:21 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:24 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:27 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:27 [SpillThread] MapTask.java:1660>: Finished spill 0
+ INFO 04-11 18:05:27 [LocalJobRunner Map Task Executor #0] MapTask.java:1219>: (RESET) equator 45535788 kv 11383940(45535760) kvi 8762516(35050064)
+ INFO 04-11 18:05:30 [LocalJobRunner Map Task Executor #0] MapTask.java:1564>: Spilling map output
+ INFO 04-11 18:05:30 [LocalJobRunner Map Task Executor #0] MapTask.java:1565>: bufstart = 45535788; bufend = 81486960; bufvoid = 104857600
+ INFO 04-11 18:05:30 [LocalJobRunner Map Task Executor #0] MapTask.java:1567>: kvstart = 11383940(45535760); kvend = 25614620(102458480); length = 11983721/6553600
+ INFO 04-11 18:05:30 [LocalJobRunner Map Task Executor #0] MapTask.java:1202>: (EQUATOR) 91972712 kvi 22993172(91972688)
+ INFO 04-11 18:05:30 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:31 [main] Job.java:1374>:  map 31% reduce 0%
+ INFO 04-11 18:05:33 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:34 [main] Job.java:1374>:  map 32% reduce 0%
+ INFO 04-11 18:05:36 [SpillThread] MapTask.java:1660>: Finished spill 1
+ INFO 04-11 18:05:36 [LocalJobRunner Map Task Executor #0] MapTask.java:1219>: (RESET) equator 91972712 kv 22993172(91972688) kvi 20371744(81486976)
+ INFO 04-11 18:05:36 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:37 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:37 [LocalJobRunner Map Task Executor #0] MapTask.java:1457>: Starting flush of map output
+ INFO 04-11 18:05:37 [LocalJobRunner Map Task Executor #0] MapTask.java:1475>: Spilling map output
+ INFO 04-11 18:05:37 [LocalJobRunner Map Task Executor #0] MapTask.java:1476>: bufstart = 91972712; bufend = 4409884; bufvoid = 104857600
+ INFO 04-11 18:05:37 [LocalJobRunner Map Task Executor #0] MapTask.java:1478>: kvstart = 22993172(91972688); kvend = 17228252(68913008); length = 5764921/6553600
+ INFO 04-11 18:05:39 [LocalJobRunner Map Task Executor #0] MapTask.java:1660>: Finished spill 2
+ INFO 04-11 18:05:39 [communication thread] LocalJobRunner.java:591>: map > sort
+ INFO 04-11 18:05:39 [LocalJobRunner Map Task Executor #0] Merger.java:597>: Merging 3 sorted segments
+ INFO 04-11 18:05:39 [LocalJobRunner Map Task Executor #0] Merger.java:696>: Down to the last merge-pass, with 3 segments left of total size: 10234964 bytes
+ INFO 04-11 18:05:40 [main] Job.java:1374>:  map 33% reduce 0%
+ INFO 04-11 18:05:41 [LocalJobRunner Map Task Executor #0] Task.java:1001>: Task:attempt_local1412473370_0001_m_000001_0 is done. And is in the process of committing
+ INFO 04-11 18:05:41 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:591>: map > sort
+ INFO 04-11 18:05:41 [LocalJobRunner Map Task Executor #0] Task.java:1121>: Task 'attempt_local1412473370_0001_m_000001_0' done.
+ INFO 04-11 18:05:41 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:249>: Finishing task: attempt_local1412473370_0001_m_000001_0
+ INFO 04-11 18:05:41 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:224>: Starting task: attempt_local1412473370_0001_m_000002_0
+ INFO 04-11 18:05:41 [LocalJobRunner Map Task Executor #0] ProcfsBasedProcessTree.java:181>: ProcfsBasedProcessTree currently is supported only on Linux.
+ INFO 04-11 18:05:41 [LocalJobRunner Map Task Executor #0] Task.java:587>:  Using ResourceCalculatorProcessTree : org.apache.hadoop.yarn.util.WindowsBasedProcessTree@12e38e1b
+ INFO 04-11 18:05:41 [LocalJobRunner Map Task Executor #0] MapTask.java:753>: Processing split: hdfs://master:9000/wordcount/input2/order_products__prior.csv:268435456+134217728
+ INFO 04-11 18:05:41 [LocalJobRunner Map Task Executor #0] MapTask.java:1202>: (EQUATOR) 0 kvi 26214396(104857584)
+ INFO 04-11 18:05:41 [LocalJobRunner Map Task Executor #0] MapTask.java:995>: mapreduce.task.io.sort.mb: 100
+ INFO 04-11 18:05:41 [LocalJobRunner Map Task Executor #0] MapTask.java:996>: soft limit at 83886080
+ INFO 04-11 18:05:41 [LocalJobRunner Map Task Executor #0] MapTask.java:997>: bufstart = 0; bufvoid = 104857600
+ INFO 04-11 18:05:41 [LocalJobRunner Map Task Executor #0] MapTask.java:998>: kvstart = 26214396; length = 6553600
+ INFO 04-11 18:05:41 [LocalJobRunner Map Task Executor #0] MapTask.java:402>: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+ INFO 04-11 18:05:42 [main] Job.java:1374>:  map 100% reduce 0%
+ INFO 04-11 18:05:45 [LocalJobRunner Map Task Executor #0] MapTask.java:1564>: Spilling map output
+ INFO 04-11 18:05:45 [LocalJobRunner Map Task Executor #0] MapTask.java:1565>: bufstart = 0; bufend = 35951172; bufvoid = 104857600
+ INFO 04-11 18:05:45 [LocalJobRunner Map Task Executor #0] MapTask.java:1567>: kvstart = 26214396(104857584); kvend = 14230676(56922704); length = 11983721/6553600
+ INFO 04-11 18:05:45 [LocalJobRunner Map Task Executor #0] MapTask.java:1202>: (EQUATOR) 46436930 kvi 11609228(46436912)
+ INFO 04-11 18:05:47 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:48 [main] Job.java:1374>:  map 47% reduce 0%
+ INFO 04-11 18:05:50 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:50 [SpillThread] MapTask.java:1660>: Finished spill 0
+ INFO 04-11 18:05:50 [LocalJobRunner Map Task Executor #0] MapTask.java:1219>: (RESET) equator 46436930 kv 11609228(46436912) kvi 8987800(35951200)
+ INFO 04-11 18:05:53 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:53 [LocalJobRunner Map Task Executor #0] MapTask.java:1564>: Spilling map output
+ INFO 04-11 18:05:53 [LocalJobRunner Map Task Executor #0] MapTask.java:1565>: bufstart = 46436930; bufend = 82388102; bufvoid = 104857600
+ INFO 04-11 18:05:53 [LocalJobRunner Map Task Executor #0] MapTask.java:1567>: kvstart = 11609228(46436912); kvend = 25839908(103359632); length = 11983721/6553600
+ INFO 04-11 18:05:53 [LocalJobRunner Map Task Executor #0] MapTask.java:1202>: (EQUATOR) 92873859 kvi 23218460(92873840)
+ INFO 04-11 18:05:54 [main] Job.java:1374>:  map 51% reduce 0%
+ INFO 04-11 18:05:56 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:57 [main] Job.java:1374>:  map 52% reduce 0%
+ INFO 04-11 18:05:58 [SpillThread] MapTask.java:1660>: Finished spill 1
+ INFO 04-11 18:05:58 [LocalJobRunner Map Task Executor #0] MapTask.java:1219>: (RESET) equator 92873859 kv 23218460(92873840) kvi 20597032(82388128)
+ INFO 04-11 18:05:59 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:59 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:05:59 [LocalJobRunner Map Task Executor #0] MapTask.java:1457>: Starting flush of map output
+ INFO 04-11 18:05:59 [LocalJobRunner Map Task Executor #0] MapTask.java:1475>: Spilling map output
+ INFO 04-11 18:05:59 [LocalJobRunner Map Task Executor #0] MapTask.java:1476>: bufstart = 92873859; bufend = 4944180; bufvoid = 104857599
+ INFO 04-11 18:05:59 [LocalJobRunner Map Task Executor #0] MapTask.java:1478>: kvstart = 23218460(92873840); kvend = 17575824(70303296); length = 5642637/6553600
+ INFO 04-11 18:06:00 [main] Job.java:1374>:  map 53% reduce 0%
+ INFO 04-11 18:06:01 [LocalJobRunner Map Task Executor #0] MapTask.java:1660>: Finished spill 2
+ INFO 04-11 18:06:01 [LocalJobRunner Map Task Executor #0] Merger.java:597>: Merging 3 sorted segments
+ INFO 04-11 18:06:01 [LocalJobRunner Map Task Executor #0] Merger.java:696>: Down to the last merge-pass, with 3 segments left of total size: 10266188 bytes
+ INFO 04-11 18:06:02 [communication thread] LocalJobRunner.java:591>: map > sort >
+ INFO 04-11 18:06:02 [LocalJobRunner Map Task Executor #0] Task.java:1001>: Task:attempt_local1412473370_0001_m_000002_0 is done. And is in the process of committing
+ INFO 04-11 18:06:02 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:591>: map > sort
+ INFO 04-11 18:06:02 [LocalJobRunner Map Task Executor #0] Task.java:1121>: Task 'attempt_local1412473370_0001_m_000002_0' done.
+ INFO 04-11 18:06:02 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:249>: Finishing task: attempt_local1412473370_0001_m_000002_0
+ INFO 04-11 18:06:02 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:224>: Starting task: attempt_local1412473370_0001_m_000003_0
+ INFO 04-11 18:06:02 [LocalJobRunner Map Task Executor #0] ProcfsBasedProcessTree.java:181>: ProcfsBasedProcessTree currently is supported only on Linux.
+ INFO 04-11 18:06:03 [LocalJobRunner Map Task Executor #0] Task.java:587>:  Using ResourceCalculatorProcessTree : org.apache.hadoop.yarn.util.WindowsBasedProcessTree@96bb6a8
+ INFO 04-11 18:06:03 [LocalJobRunner Map Task Executor #0] MapTask.java:753>: Processing split: hdfs://master:9000/wordcount/input2/order_products__prior.csv:402653184+134217728
+ INFO 04-11 18:06:03 [LocalJobRunner Map Task Executor #0] MapTask.java:1202>: (EQUATOR) 0 kvi 26214396(104857584)
+ INFO 04-11 18:06:03 [LocalJobRunner Map Task Executor #0] MapTask.java:995>: mapreduce.task.io.sort.mb: 100
+ INFO 04-11 18:06:03 [LocalJobRunner Map Task Executor #0] MapTask.java:996>: soft limit at 83886080
+ INFO 04-11 18:06:03 [LocalJobRunner Map Task Executor #0] MapTask.java:997>: bufstart = 0; bufvoid = 104857600
+ INFO 04-11 18:06:03 [LocalJobRunner Map Task Executor #0] MapTask.java:998>: kvstart = 26214396; length = 6553600
+ INFO 04-11 18:06:03 [LocalJobRunner Map Task Executor #0] MapTask.java:402>: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+ INFO 04-11 18:06:03 [main] Job.java:1374>:  map 100% reduce 0%
+ INFO 04-11 18:06:06 [LocalJobRunner Map Task Executor #0] MapTask.java:1564>: Spilling map output
+ INFO 04-11 18:06:06 [LocalJobRunner Map Task Executor #0] MapTask.java:1565>: bufstart = 0; bufend = 35951172; bufvoid = 104857600
+ INFO 04-11 18:06:06 [LocalJobRunner Map Task Executor #0] MapTask.java:1567>: kvstart = 26214396(104857584); kvend = 14230676(56922704); length = 11983721/6553600
+ INFO 04-11 18:06:06 [LocalJobRunner Map Task Executor #0] MapTask.java:1202>: (EQUATOR) 46436930 kvi 11609228(46436912)
+ INFO 04-11 18:06:08 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:06:09 [main] Job.java:1374>:  map 67% reduce 0%
+ INFO 04-11 18:06:11 [SpillThread] MapTask.java:1660>: Finished spill 0
+ INFO 04-11 18:06:11 [LocalJobRunner Map Task Executor #0] MapTask.java:1219>: (RESET) equator 46436930 kv 11609228(46436912) kvi 8987800(35951200)
+ INFO 04-11 18:06:11 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:06:14 [LocalJobRunner Map Task Executor #0] MapTask.java:1564>: Spilling map output
+ INFO 04-11 18:06:14 [LocalJobRunner Map Task Executor #0] MapTask.java:1565>: bufstart = 46436930; bufend = 82388102; bufvoid = 104857600
+ INFO 04-11 18:06:14 [LocalJobRunner Map Task Executor #0] MapTask.java:1567>: kvstart = 11609228(46436912); kvend = 25839908(103359632); length = 11983721/6553600
+ INFO 04-11 18:06:14 [LocalJobRunner Map Task Executor #0] MapTask.java:1202>: (EQUATOR) 92873859 kvi 23218460(92873840)
+ INFO 04-11 18:06:14 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:06:15 [main] Job.java:1374>:  map 72% reduce 0%
+ INFO 04-11 18:06:17 [communication thread] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:06:19 [SpillThread] MapTask.java:1660>: Finished spill 1
+ INFO 04-11 18:06:19 [LocalJobRunner Map Task Executor #0] MapTask.java:1219>: (RESET) equator 92873859 kv 23218460(92873840) kvi 20597032(82388128)
+ INFO 04-11 18:06:20 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:591>: map > map
+ INFO 04-11 18:06:20 [LocalJobRunner Map Task Executor #0] MapTask.java:1457>: Starting flush of map output
+ INFO 04-11 18:06:20 [LocalJobRunner Map Task Executor #0] MapTask.java:1475>: Spilling map output
+ INFO 04-11 18:06:20 [LocalJobRunner Map Task Executor #0] MapTask.java:1476>: bufstart = 92873859; bufend = 4946832; bufvoid = 104857599
+ INFO 04-11 18:06:20 [LocalJobRunner Map Task Executor #0] MapTask.java:1478>: kvstart = 23218460(92873840); kvend = 17574940(70299760); length = 5643521/6553600
+ INFO 04-11 18:06:20 [communication thread] LocalJobRunner.java:591>: map > sort
+ INFO 04-11 18:06:21 [main] Job.java:1374>:  map 73% reduce 0%
+ INFO 04-11 18:06:22 [LocalJobRunner Map Task Executor #0] MapTask.java:1660>: Finished spill 2
+ INFO 04-11 18:06:22 [LocalJobRunner Map Task Executor #0] Merger.java:597>: Merging 3 sorted segments
+ INFO 04-11 18:06:22 [LocalJobRunner Map Task Executor #0] Merger.java:696>: Down to the last merge-pass, with 3 segments left of total size: 10277248 bytes
+ INFO 04-11 18:06:23 [LocalJobRunner Map Task Executor #0] Task.java:1001>: Task:attempt_local1412473370_0001_m_000003_0 is done. And is in the process of committing
+ INFO 04-11 18:06:23 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:591>: map > sort
+ INFO 04-11 18:06:23 [LocalJobRunner Map Task Executor #0] Task.java:1121>: Task 'attempt_local1412473370_0001_m_000003_0' done.
+ INFO 04-11 18:06:23 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:249>: Finishing task: attempt_local1412473370_0001_m_000003_0
+ INFO 04-11 18:06:23 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:224>: Starting task: attempt_local1412473370_0001_m_000004_0
+ INFO 04-11 18:06:23 [LocalJobRunner Map Task Executor #0] ProcfsBasedProcessTree.java:181>: ProcfsBasedProcessTree currently is supported only on Linux.
+ INFO 04-11 18:06:23 [main] Job.java:1374>:  map 100% reduce 0%
+ INFO 04-11 18:06:23 [LocalJobRunner Map Task Executor #0] Task.java:587>:  Using ResourceCalculatorProcessTree : org.apache.hadoop.yarn.util.WindowsBasedProcessTree@525b9848
+ INFO 04-11 18:06:23 [LocalJobRunner Map Task Executor #0] MapTask.java:753>: Processing split: hdfs://master:9000/wordcount/input2/order_products__prior.csv:536870912+40679794
+ INFO 04-11 18:06:23 [LocalJobRunner Map Task Executor #0] MapTask.java:1202>: (EQUATOR) 0 kvi 26214396(104857584)
+ INFO 04-11 18:06:23 [LocalJobRunner Map Task Executor #0] MapTask.java:995>: mapreduce.task.io.sort.mb: 100
+ INFO 04-11 18:06:23 [LocalJobRunner Map Task Executor #0] MapTask.java:996>: soft limit at 83886080
+ INFO 04-11 18:06:23 [LocalJobRunner Map Task Executor #0] MapTask.java:997>: bufstart = 0; bufvoid = 104857600
+ INFO 04-11 18:06:23 [LocalJobRunner Map Task Executor #0] MapTask.java:998>: kvstart = 26214396; length = 6553600
+ INFO 04-11 18:06:23 [LocalJobRunner Map Task Executor #0] MapTask.java:402>: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+ INFO 04-11 18:06:26 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:591>:
+ INFO 04-11 18:06:26 [LocalJobRunner Map Task Executor #0] MapTask.java:1457>: Starting flush of map output
+ INFO 04-11 18:06:26 [LocalJobRunner Map Task Executor #0] MapTask.java:1475>: Spilling map output
+ INFO 04-11 18:06:26 [LocalJobRunner Map Task Executor #0] MapTask.java:1476>: bufstart = 0; bufend = 26923392; bufvoid = 104857600
+ INFO 04-11 18:06:26 [LocalJobRunner Map Task Executor #0] MapTask.java:1478>: kvstart = 26214396(104857584); kvend = 17239936(68959744); length = 8974461/6553600
+ INFO 04-11 18:06:27 [main] Job.java:1374>:  map 80% reduce 0%
+ INFO 04-11 18:06:29 [communication thread] LocalJobRunner.java:591>: map > sort
+ INFO 04-11 18:06:29 [main] Job.java:1374>:  map 93% reduce 0%
+ INFO 04-11 18:06:31 [LocalJobRunner Map Task Executor #0] MapTask.java:1660>: Finished spill 0
+ INFO 04-11 18:06:31 [LocalJobRunner Map Task Executor #0] Task.java:1001>: Task:attempt_local1412473370_0001_m_000004_0 is done. And is in the process of committing
+ INFO 04-11 18:06:31 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:591>: map
+ INFO 04-11 18:06:31 [LocalJobRunner Map Task Executor #0] Task.java:1121>: Task 'attempt_local1412473370_0001_m_000004_0' done.
+ INFO 04-11 18:06:31 [LocalJobRunner Map Task Executor #0] LocalJobRunner.java:249>: Finishing task: attempt_local1412473370_0001_m_000004_0
+ INFO 04-11 18:06:31 [Thread-4] LocalJobRunner.java:456>: map task executor complete.
+ INFO 04-11 18:06:31 [Thread-4] LocalJobRunner.java:448>: Waiting for reduce tasks
+ INFO 04-11 18:06:31 [pool-8-thread-1] LocalJobRunner.java:302>: Starting task: attempt_local1412473370_0001_r_000000_0
+ INFO 04-11 18:06:31 [pool-8-thread-1] ProcfsBasedProcessTree.java:181>: ProcfsBasedProcessTree currently is supported only on Linux.
+ INFO 04-11 18:06:31 [main] Job.java:1374>:  map 100% reduce 0%
+ INFO 04-11 18:06:31 [pool-8-thread-1] Task.java:587>:  Using ResourceCalculatorProcessTree : org.apache.hadoop.yarn.util.WindowsBasedProcessTree@31d314a8
+ INFO 04-11 18:06:31 [pool-8-thread-1] ReduceTask.java:362>: Using ShuffleConsumerPlugin: org.apache.hadoop.mapreduce.task.reduce.Shuffle@60335616
+ INFO 04-11 18:06:31 [pool-8-thread-1] MergeManagerImpl.java:197>: MergerManager: memoryLimit=2629566464, maxSingleShuffleLimit=657391616, mergeThreshold=1735513984, ioSortFactor=10, memToMemMergeOutputsThreshold=10
+ INFO 04-11 18:06:31 [EventFetcher for fetching Map Completion Events] EventFetcher.java:61>: attempt_local1412473370_0001_r_000000_0 Thread started: EventFetcher for fetching Map Completion Events
+ INFO 04-11 18:06:31 [localfetcher#1] LocalFetcher.java:141>: localfetcher#1 about to shuffle output of map attempt_local1412473370_0001_m_000002_0 decomp: 10266188 len: 10266192 to MEMORY
+ INFO 04-11 18:06:31 [localfetcher#1] InMemoryMapOutput.java:100>: Read 10266188 bytes from map-output for attempt_local1412473370_0001_m_000002_0
+ INFO 04-11 18:06:31 [localfetcher#1] MergeManagerImpl.java:315>: closeInMemoryFile -> map-output of size: 10266188, inMemoryMapOutputs.size() -> 1, commitMemory -> 0, usedMemory ->10266188
+ INFO 04-11 18:06:31 [localfetcher#1] LocalFetcher.java:141>: localfetcher#1 about to shuffle output of map attempt_local1412473370_0001_m_000000_0 decomp: 10073378 len: 10073382 to MEMORY
+ INFO 04-11 18:06:31 [localfetcher#1] InMemoryMapOutput.java:100>: Read 10073378 bytes from map-output for attempt_local1412473370_0001_m_000000_0
+ INFO 04-11 18:06:31 [localfetcher#1] MergeManagerImpl.java:315>: closeInMemoryFile -> map-output of size: 10073378, inMemoryMapOutputs.size() -> 2, commitMemory -> 10266188, usedMemory ->20339566
+ INFO 04-11 18:06:31 [localfetcher#1] LocalFetcher.java:141>: localfetcher#1 about to shuffle output of map attempt_local1412473370_0001_m_000003_0 decomp: 10277234 len: 10277238 to MEMORY
+ INFO 04-11 18:06:31 [localfetcher#1] InMemoryMapOutput.java:100>: Read 10277234 bytes from map-output for attempt_local1412473370_0001_m_000003_0
+ INFO 04-11 18:06:31 [localfetcher#1] MergeManagerImpl.java:315>: closeInMemoryFile -> map-output of size: 10277234, inMemoryMapOutputs.size() -> 3, commitMemory -> 20339566, usedMemory ->30616800
+ INFO 04-11 18:06:31 [localfetcher#1] LocalFetcher.java:141>: localfetcher#1 about to shuffle output of map attempt_local1412473370_0001_m_000004_0 decomp: 3112804 len: 3112808 to MEMORY
+ INFO 04-11 18:06:31 [localfetcher#1] InMemoryMapOutput.java:100>: Read 3112804 bytes from map-output for attempt_local1412473370_0001_m_000004_0
+ INFO 04-11 18:06:31 [localfetcher#1] MergeManagerImpl.java:315>: closeInMemoryFile -> map-output of size: 3112804, inMemoryMapOutputs.size() -> 4, commitMemory -> 30616800, usedMemory ->33729604
+ INFO 04-11 18:06:31 [localfetcher#1] LocalFetcher.java:141>: localfetcher#1 about to shuffle output of map attempt_local1412473370_0001_m_000001_0 decomp: 10234964 len: 10234968 to MEMORY
+ INFO 04-11 18:06:31 [localfetcher#1] InMemoryMapOutput.java:100>: Read 10234964 bytes from map-output for attempt_local1412473370_0001_m_000001_0
+ INFO 04-11 18:06:31 [localfetcher#1] MergeManagerImpl.java:315>: closeInMemoryFile -> map-output of size: 10234964, inMemoryMapOutputs.size() -> 5, commitMemory -> 33729604, usedMemory ->43964568
+ INFO 04-11 18:06:31 [EventFetcher for fetching Map Completion Events] EventFetcher.java:76>: EventFetcher is interrupted.. Returning
+ INFO 04-11 18:06:31 [pool-8-thread-1] LocalJobRunner.java:591>: 5 / 5 copied.
+ INFO 04-11 18:06:31 [pool-8-thread-1] MergeManagerImpl.java:687>: finalMerge called with 5 in-memory map-outputs and 0 on-disk map-outputs
+ INFO 04-11 18:06:31 [pool-8-thread-1] Merger.java:597>: Merging 5 sorted segments
+ INFO 04-11 18:06:31 [pool-8-thread-1] Merger.java:696>: Down to the last merge-pass, with 5 segments left of total size: 43964523 bytes
+ INFO 04-11 18:06:34 [pool-8-thread-1] MergeManagerImpl.java:754>: Merged 5 segments, 43964568 bytes to disk to satisfy reduce memory limit
+ INFO 04-11 18:06:34 [pool-8-thread-1] MergeManagerImpl.java:784>: Merging 1 files, 43964564 bytes from disk
+ INFO 04-11 18:06:34 [pool-8-thread-1] MergeManagerImpl.java:799>: Merging 0 segments, 0 bytes from memory into reduce
+ INFO 04-11 18:06:34 [pool-8-thread-1] Merger.java:597>: Merging 1 sorted segments
+ INFO 04-11 18:06:34 [pool-8-thread-1] Merger.java:696>: Down to the last merge-pass, with 1 segments left of total size: 43964555 bytes
+ INFO 04-11 18:06:34 [pool-8-thread-1] LocalJobRunner.java:591>: 5 / 5 copied.
+ INFO 04-11 18:06:34 [pool-8-thread-1] Configuration.java:1129>: mapred.skip.on is deprecated. Instead, use mapreduce.job.skiprecords
+ INFO 04-11 18:06:37 [communication thread] LocalJobRunner.java:591>: reduce > reduce
+ INFO 04-11 18:06:37 [main] Job.java:1374>:  map 100% reduce 81%
+ INFO 04-11 18:06:40 [communication thread] LocalJobRunner.java:591>: reduce > reduce
+ INFO 04-11 18:06:40 [main] Job.java:1374>:  map 100% reduce 95%
+ INFO 04-11 18:06:40 [pool-8-thread-1] Task.java:1001>: Task:attempt_local1412473370_0001_r_000000_0 is done. And is in the process of committing
+ INFO 04-11 18:06:40 [pool-8-thread-1] LocalJobRunner.java:591>: reduce > reduce
+ INFO 04-11 18:06:40 [pool-8-thread-1] Task.java:1162>: Task attempt_local1412473370_0001_r_000000_0 is allowed to commit now
+ INFO 04-11 18:06:40 [pool-8-thread-1] FileOutputCommitter.java:439>: Saved output of task 'attempt_local1412473370_0001_r_000000_0' to hdfs://master:9000/wordcount/output2/_temporary/0/task_local1412473370_0001_r_000000
+ INFO 04-11 18:06:40 [pool-8-thread-1] LocalJobRunner.java:591>: reduce > reduce
+ INFO 04-11 18:06:40 [pool-8-thread-1] Task.java:1121>: Task 'attempt_local1412473370_0001_r_000000_0' done.
+ INFO 04-11 18:06:40 [pool-8-thread-1] LocalJobRunner.java:325>: Finishing task: attempt_local1412473370_0001_r_000000_0
+ INFO 04-11 18:06:40 [Thread-4] LocalJobRunner.java:456>: reduce task executor complete.
+ INFO 04-11 18:06:41 [main] Job.java:1374>:  map 100% reduce 100%
+ INFO 04-11 18:06:41 [main] Job.java:1385>: Job job_local1412473370_0001 completed successfully
+ INFO 04-11 18:06:41 [main] Job.java:1392>: Counters: 38
+	File System Counters
+		FILE: Number of bytes read=271455162
+		FILE: Number of bytes written=418731916
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=2497352420
+		HDFS: Number of bytes written=32483334
+		HDFS: Number of read operations=73
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=14
+	Map-Reduce Framework
+		Map input records=32434490
+		Map output records=32434490
+		Map output bytes=378689211
+		Map output materialized bytes=43964588
+		Input split bytes=630
+		Combine input records=35427031
+		Combine output records=6207419
+		Reduce input groups=3214875
+		Reduce shuffle bytes=43964588
+		Reduce input records=3214878
+		Reduce output records=3214875
+		Spilled Records=9422297
+		Shuffled Maps =5
+		Failed Shuffles=0
+		Merged Map outputs=5
+		GC time elapsed (ms)=655
+		CPU time spent (ms)=0
+		Physical memory (bytes) snapshot=0
+		Virtual memory (bytes) snapshot=0
+		Total committed heap usage (bytes)=5980028928
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters
+		Bytes Read=577567090
+	File Output Format Counters
+		Bytes Written=32483334
+执行完成...
+FileStatus{path=hdfs://master:9000/wordcount/output2/_SUCCESS; isDirectory=false; length=0; replication=3; blocksize=134217728; modification_time=1523441200912; access_time=1523441200910; owner=root; group=supergroup; permission=rw-r--r--; isSymlink=false}
+hdfs://master:9000/wordcount/output2/_SUCCESS
+FileStatus{path=hdfs://master:9000/wordcount/output2/part-r-00000; isDirectory=false; length=32483334; replication=3; blocksize=134217728; modification_time=1523441200809; access_time=1523441194310; owner=root; group=supergroup; permission=rw-r--r--; isSymlink=false}
+hdfs://master:9000/wordcount/output2/part-r-00000
+10	15
+100	2
+1000	7
+10000	14
+1000000	3
+1000001	11
+1000002	10
+1000003	34
+1000004	11
+1000005	10
+1000006	20
+1000007	7
+1000009	2
+100001	5
+1000010	7
+1000011	16
+1000012	9
+1000013	12
+1000015	17
+1000016	3
+1000017	5
+1000018	9
+1000019	15
+100002	6
+1000020	3
+1000021	8
+1000022	30
+1000023	20
+1000024	9
+1000025	42
+1000026	23
