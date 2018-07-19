@@ -54,9 +54,10 @@ object ActionsUpdateApp{
       .builder()
 //      .appName("Spark Hbase Example")
       .appName("Spark Hbase Data Completion APP 4 Actions")
-      .config("spark.hbase.host", "172.31.5.30")
+//      .config("spark.hbase.host", "172.31.5.30")
+//      .config("spark.yarn.executor.memoryOverhead", "1024")
+      .config("spark.hbase.host", "master")
       //解决堆外空间不足的问题
-      .config("spark.yarn.executor.memoryOverhead", "1024")
 //本地测试时打开
 //      .master("local")
 //Standlone集群测试时打开

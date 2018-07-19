@@ -16,7 +16,6 @@ object ConfUtils {
   def createHBaseConf(): Configuration ={
     val hBaseConf = HBaseConfiguration.create()
     hBaseConf.set("hbase.zookeeper.property.clientPort", "2181")
-    hBaseConf.set("hbase.zookeeper.property.clientPort", "2181")
     hBaseConf.set("hbase.zookeeper.quorum", "172.31.5.30") //Change the EMR master IP addr. to localhost when you debug locally
 //    hBaseConf.set("hbase.zookeeper.quorum", "master,slave1,slave2")
     hBaseConf.set("hbase.client.retries.number", "60") //重试次数  见org.apache.hadoop.hbase.client.ClientScanner

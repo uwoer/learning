@@ -50,6 +50,35 @@ object PagesUpdateApp{
     }
     val start: LocalDateTime = startDate.atStartOfDay
     val end: LocalDateTime = endDate.plusDays(1L).atStartOfDay
+    val gcOptions =
+      """
+        |-XX:+UseG1GC
+        |-XX:+UnlockDiagnosticVMOptions
+        |-XX:+G1SummarizeConcMark
+        |-XX:InitiatingHeapOccupancyPercent=35
+        |-XX:InitiatingHeapOccupancyPercent=65
+        |-XX:+ParallelRefProcEnabled
+        |-XX:ConcGCThreads=4
+        |-XX:ParallelGCThreads=16
+        |-XX:MaxTenuringThreshold=1
+        |-XX:G1HeapRegionSize=32m
+        |-XX:G1MixedGCCountTarget=64
+        |-XX:G1OldCSetRegionThresholdPercent=5
+        |-verbose:gc
+        |-XX:+PrintGC
+        |-XX:+PrintGCDetails
+        |-XX:+PrintGCApplicationStoppedTime
+        |-XX:+PrintHeapAtGC
+        |-XX:+PrintGCDateStamps
+        |-XX:+PrintAdaptiveSizePolicy
+        |-XX:+PrintTenuringDistribution
+        |-XX:+PrintSafepointStatistics
+        |-XX:PrintSafepointStatisticsCount=1
+        |-XX:PrintFLSStatistics=1
+        |-XX:+PrintFlagsFinal
+        |-XX:+PrintReferenceGC
+      """.stripMargin
+    println(gcOptions)
     val spark = SparkSession
       .builder()
 //      .appName("Spark Hbase Example")
@@ -57,6 +86,7 @@ object PagesUpdateApp{
       .config("spark.hbase.host", "172.31.5.30")
       //解决堆外空间不足的问题
       .config("spark.yarn.executor.memoryOverhead", "1024")
+//      .config("spark.executor.extraJavaOptions", gcOptions)
 //本地测试时打开
 //      .master("local")
 //Standlone集群测试时打开

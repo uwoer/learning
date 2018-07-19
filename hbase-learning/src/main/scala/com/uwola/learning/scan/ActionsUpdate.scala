@@ -8,7 +8,7 @@ import com.uwola.learning.conf.ConfUtils
 import com.uwola.learning.enums.PhType
 import com.uwola.learning.utils.PhTypeUtil
 import org.apache.hadoop.hbase.TableName
-import org.apache.hadoop.hbase.client.{ConnectionFactory, Put, Result, Scan}
+import org.apache.hadoop.hbase.client._
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable
 import org.apache.hadoop.hbase.mapreduce.TableInputFormat
 import org.apache.hadoop.hbase.util.Bytes
@@ -73,6 +73,8 @@ object ActionsUpdate {
        partitionRecords.foreach(row=>{
            var be = false
            val p = new Put(Bytes.toBytes(row.getString(0)))
+           //某些不重要的情况下可以不写WAL以提升性能
+//           p.setDurability(Durability.SKIP_WAL)
            if(!row.isNullAt(1)){
              p.addColumn(Bytes.toBytes("location"), Bytes.toBytes("ip"), Bytes.toBytes(row.getString(1)))
              be = true
@@ -150,6 +152,8 @@ object ActionsUpdate {
              if (rowCount % batchSize == 0) {
                //提交
                table.put(putList)
+               //gc help
+               putList = null
                rowCount = 0
              }
            }
@@ -157,6 +161,8 @@ object ActionsUpdate {
        if (rowCount > 0) {
          //提交
          table.put(putList)
+         //gc help
+         putList = null
        }
        if(table != null) table.close()
      })

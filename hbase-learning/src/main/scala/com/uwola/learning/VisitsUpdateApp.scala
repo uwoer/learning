@@ -65,7 +65,7 @@ object VisitsUpdateApp{
 //      .config("spark.executor.extraJavaOptions", "-Xdebug -Xrunjdwp:transport=dt_socket,address=10001,server=y,suspend=n")
       .getOrCreate()
 
-    VisitsUpdate.update(spark)
+    VisitsUpdate.update(spark, start, end)
 
 //关闭SparkSession上下文 释放资源
     spark.stop()

@@ -124,6 +124,8 @@ object PagesUpdate {
              //提交
              table.put(putList)
              rowCount = 0
+             //gc help
+             putList = null
            }
          }
 
@@ -131,6 +133,8 @@ object PagesUpdate {
        if (rowCount > 0) {
          //提交
          table.put(putList)
+         //gc help
+         putList = null
        }
        if(table != null) table.close()
      })

@@ -1,5 +1,7 @@
 package com.uwola.learning.scan
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.ArrayList
 
 import com.uwola.learning.conf.ConfUtils
@@ -18,7 +20,7 @@ import org.apache.spark.sql.SparkSession
 object VisitsUpdate {
   private val TABLE_NAME = "visits"
   val batchSize = 2000
-   def update(spark: SparkSession): Unit = {
+   def update(spark: SparkSession, start:LocalDateTime, end:LocalDateTime): Unit = {
      val hBaseConf = ConfUtils.createHBaseConf()
      hBaseConf.set(TableInputFormat.INPUT_TABLE, TABLE_NAME)
 
@@ -26,9 +28,8 @@ object VisitsUpdate {
      scan.setBatch(1000)
      //用来指定显示的列以及条件列
      scan.addColumn(Bytes.toBytes("basicinfo"), Bytes.toBytes("login_userId"))
-     scan.setStartRow(Bytes.toBytes("2018-04-01"))
-     scan.setStopRow(Bytes.toBytes("2018-06-01"))
-
+     scan.setStartRow(Bytes.toBytes(start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+     scan.setStopRow(Bytes.toBytes(end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
      //把过滤器加载到hbaseconf中
      hBaseConf.set(TableInputFormat.SCAN, ConfUtils.convertScanToString(scan))
      //构建RDD
