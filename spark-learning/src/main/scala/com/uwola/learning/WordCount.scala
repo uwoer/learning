@@ -1,5 +1,6 @@
 package com.uwola.learning
 
+import org.apache.spark.ml.feature.HashingTF
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
@@ -37,6 +38,16 @@ object WordCount {
     lines.flatMap(_.split(" ")).map((_,1)).groupBy(_._1).mapValues(_.size).collect().toList.sortWith(_._2>_._2).slice(0,10).foreach(println)
 
     sc.stop()
+  }
+
+
+
+  def main2(args: Array[String]): Unit = {
+    val conf = new SparkConf().setAppName("wc").setMaster("local[2]")
+    val sc = new SparkContext(conf)
+    val textRdd = sc.textFile("D:\\data\\The_Man_of_Property.txt")
+    textRdd.flatMap(line => line.split(" ")).map(line => (line, 1)).reduceByKey(_ + _).sortBy(_._2, ascending = false).take(20).foreach(println)
+    val a = new HashingTF()
   }
 
 }
