@@ -28,7 +28,7 @@ object App{
       .getOrCreate()
 
     import spark.sql
-
+    sql("set hive.cli.print.header=true")
     val databases = sql("show databases")
     Thread.sleep(30000)
     databases.show
