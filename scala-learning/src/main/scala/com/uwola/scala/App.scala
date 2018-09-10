@@ -57,6 +57,68 @@ object App {
     HelloImpl.sayHello("dudu")
 
     a.filter(canLaunchExecutor)
+
+
+
+
+
+    for(i <- 1 to 9; j <- 1 to 9) {
+      if(j == 9) {
+        println(i * j)
+      } else {
+        print(i * j + " ")
+      }
+    }
+    println("++++++++++++++++++++++++++")
+    for(i <- 1 to 9; j <- 1 to 9) {
+      if(j == 9) {
+        println(if((i * j).toString.length<2){" "+i * j}else{i * j})
+      } else {
+        print(if((i * j).toString.length<2){" "+i * j+ " "}else{i * j + " "})
+      }
+    }
+
+
+    var n = 10
+    for(i <- 1 to n) println(i)
+    for(i <- 1 until n) println(i)
+
+    import scala.util.control.Breaks._
+    breakable {
+      while(n > 0) {
+        if(n<6) break;
+        println(n)
+        n -= 1
+      }
+    }
+
+
+    sayHello("uwoerla")
+    sayHello("uwoerla",25)
+
+    sayHello(name = "uwoerla")
+    sayHello(name = "uwoerla",age = 25)
+    sayHello(age = 25,name = "uwoerla")
+
+    println(sum(1, 2, 3, 4, 5))
+    println(sum(1 to 5: _*))
+
+    //    for(c <- "hello world") println(c)
+//    for(i <- 1 to 10) yield i
+
+
+
+  }
+
+
+  def sayHello(name: String, age: Int = 20) {
+    println("Hello, " + name + ", your age is " + age)
+  }
+
+  def sum(nums: Int*) = {
+    var res = 0
+    for (num <- nums) res += num
+    res
   }
 
 }

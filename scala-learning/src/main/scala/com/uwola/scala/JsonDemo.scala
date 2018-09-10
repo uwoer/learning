@@ -31,6 +31,9 @@ object JsonDemo {
     json1.userId = "xxxxxx"
     println("=====>"+json1.userId)
 //    println("=====>"+json1.asInstanceOf[VisitEvent])
+
+
+    println(None == null)
   }
 
 }
