@@ -45,6 +45,9 @@ object ClassTestApp {
     println("json2p2 name is "+json2p2.name+" age is "+json2p2.age)
     println("json2p2 name is "+json2p2.getName+" age is "+json2p2.getAge)
 
+
+    def sayHello = (name: String) => println("Hello " + name)
+    sayHello("aonemore")
   }
 
 }
