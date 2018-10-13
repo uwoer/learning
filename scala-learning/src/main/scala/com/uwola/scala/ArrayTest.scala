@@ -64,8 +64,50 @@ object ArrayTest {
     println(b.mkString("."))
     println(b.mkString("http://",".",""))
 
+    val list = List(1)
+    println(list.head)
+    //emety list
+    println(list.tail == Nil)
+    println(list.tail == None)
+    println(list.tail == null)
+
+    val list2 = 0 :: list
+    println(list2.head)
+    println(list2.tail)
+    val list3 = -1 :: list2
+    println(list3.head)
+    println(list3.tail)
+
+    val list4 =list3.::(3)
+    println(list4.head)
+    println(list4.tail)
+
+    val linkedList = scala.collection.mutable.LinkedList(1, 2, 3, 4)
+    println(linkedList.elem)
+    println(linkedList.next)
+
+    // 没有重复元素无序的集合
+    val set = Set(1, 2, 3)
+    set + 4
+    val hashSet = new scala.collection.mutable.HashSet[Int]()
+    hashSet += 1; hashSet += 2; hashSet += 3
+    // 会用一个链表维护插入顺序
+    val linkedHashSet = new scala.collection.mutable.LinkedHashSet[Int]()
+    linkedHashSet += 1; linkedHashSet += 2; linkedHashSet += 3
+
+    // SrotedSet会自动根据key来进行排序
+    val sortedSet = scala.collection.mutable.SortedSet("3", "1", "2")
+
+    //循环打散
+    List("In order to be irreplaceable, one must always be different.", "Be just to all, but trust not all. ").flatMap(_.split(" ")).foreach(println)
 
 
+    Array.range(1,10)
+    List.range(1,10)
+    Array.range(1,10)
+//    val a = (1 to 10).toArray
+//    val l = (1 to 10) by 2 toList
+//    val l = (1 to 10).by(2).toList
   }
 
 }

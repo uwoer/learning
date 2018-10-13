@@ -24,6 +24,8 @@ import java.util.Date;
  和
  public static Object toObject(byte[] b, PhType phType)
  两个方法就可以实现java类型到Phoenix类型的换转。
+
+ https://yq.aliyun.com/articles/253048
  */
 public class PhTypeUtil {
     private static String dateFormatPattern = "yyyy-MM-dd";
