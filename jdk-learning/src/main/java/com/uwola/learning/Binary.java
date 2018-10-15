@@ -62,8 +62,7 @@ public class Binary {
         System.out.println(tableSizeFor(8));
         System.out.println(0x7fffffff);
         System.out.println(Integer.MAX_VALUE);
-
-        new ConcurrentHashMap<>(6);
+        indexFor(5,100);
 
     }
 
@@ -123,6 +122,24 @@ public class Binary {
         n |= n >>> 16;
         System.out.println("tableSizeFor====>"+(n + 1));
         return n + 1;
+    }
+
+    private static final int hash(Object key) {
+        int h;
+        return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+    }
+
+    /**
+     *
+     * @param n HashMap 或者 ConcurrentHashMap的数组的长度 这个值必须为2的x次幂+1
+     * @param hash  hash值   获取算法：(h = key.hashCode()) ^ (h >>> 16)
+     */
+    private static void indexFor(int n,int hash){
+        // 由于n这个值必须为2的x次幂 所以n-1的二进制形式是类似于00001111这种连续的0和连续的1的形式
+        // 这个时候 (n - 1) & hash 得到的值只能是 0 到 n-1 之间
+        // 这个运算的效果和 hash％(n-1)的最终效果一致   但是&运算比%运算更高效
+        int index = (n - 1) & hash;
+        System.out.println(index);
     }
 
 }
