@@ -266,14 +266,12 @@ import java.util.stream.Stream;
  */
 
 /**
- *
- *
- JDK6,7中的ConcurrentHashmap主要使用Segment来实现减小锁粒度，把HashMap分割成若干个Segment，
+ JDK6,7中的ConcurrentHashMap主要使用Segment来实现减小锁粒度，把HashMap分割成若干个Segment，
  在put的时候需要锁住Segment，get时候不加锁，使用volatile来保证可见性，当要统计全局时（比如size），
  首先会尝试多次计算modcount来确定，这几次尝试中，是否有其他线程进行了修改操作，如果没有，则直接返回size。
  如果有，则需要依次锁住所有的Segment来计算。
- jdk7中ConcurrentHashmap中，当长度过长碰撞会很频繁，链表的增改删查操作都会消耗很长的时间，影响性能,
- 所以jdk8 中完全重写了concurrentHashmap,代码量从原来的1000多行变成了 6000多 行，实现上也和原来的分段式存储有很大的区别。
+ jdk7中ConcurrentHashMap中，当长度过长碰撞会很频繁，链表的增改删查操作都会消耗很长的时间，影响性能,
+ 所以jdk8 中完全重写了concurrentHashMap,代码量从原来的1000多行变成了 6000多 行，实现上也和原来的分段式存储有很大的区别。
  主要设计上的变化有以下几点:
  不采用segment而采用node，锁住node来实现减小锁粒度。
  设计了MOVED状态 当resize的中过程中 线程2还在put数据，线程2会帮助resize。
